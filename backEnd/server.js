@@ -49,6 +49,7 @@ app.get('/dashboard', (req, res) => {
     const user = req.session;
     if (user) {
         const role = user.role;
+        console.log(role)
         if (role === "admin") {
             const sql = "SELECT * FROM employee";
             con.query(sql, (err, result) => {
