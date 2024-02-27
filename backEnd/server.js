@@ -1,6 +1,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 const app = express();
 const cors = require('cors')
 
@@ -8,11 +9,23 @@ app.use(cors({
     origin: 'http://localhost:3000', 
     credentials: true
 }));
+
+const sessionStore = new MySQLStore({
+    /* MySQL connection options */
+    host: 'database-1.cpiowo2ek0tb.eu-north-1.rds.amazonaws.com',
+    port: '3306',
+    user: 'admin',
+    password: 'aswinmrds',
+    database: 'my_db'
+});
+
 app.use(session({
     secret: 'your_secret_key',
+    store: sessionStore,
     resave: false,
     saveUninitialized: true
 }));
+
 app.use(express.json());
 app.use(express.static('public'));
 
@@ -37,7 +50,7 @@ app.get('/dashboard', (req, res) => {
     if (user) {
         const role = user.role; // Assuming the user object has a 'role' property
         if (role === "admin") {
-            const sql = "SELECT * FROM employee";
+            const sql = "SELECT * FROM employee where role='admin'";
             con.query(sql, (err, result) => {
                 if (err) {
                     console.error("Error fetching admin data:", err);
