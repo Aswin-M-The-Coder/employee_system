@@ -173,14 +173,13 @@ app.post('/employeelogin', (req, res) => {
 
 
 app.get('/logout', (req, res) => {
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Error in logging out:", err);
-            return res.json({ Status: "Error", Error: "Error in logging out" });
-        }
-        return res.json({ Status: "Success" });
-    });
+    // Reset the authenticatedUser variable to null
+    authenticatedUser = null;
+
+    // Respond with a success message
+    return res.json({ Status: "Success" });
 });
+
 
 app.get('/adminCount', (req, res) => {
     const sql = "SELECT COUNT(*) AS admin FROM employee where role='admin'";
