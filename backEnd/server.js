@@ -8,7 +8,7 @@ app.use(cors({
     origin: 'http://localhost:3000', 
     credentials: true
 }));
-const store_house={}
+const store_house=new session.MemoryStore();
 app.use(session({
     secret: 'your_secret_key',
     resave: false,
