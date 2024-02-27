@@ -85,7 +85,7 @@ app.post('/login', (req, res) => {
         if (result.length > 0) {
             const user = result[0];
             req.session.user = user;
-            console.log(req.session.user)
+            console.log(user)
             return res.json({ Status: "Success", user });
         } else {
             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
