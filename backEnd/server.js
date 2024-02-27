@@ -48,7 +48,7 @@ con.connect(function(err) {
 app.get('/dashboard', (req, res) => {
     const user = req.session;
     if (user) {
-        const role = user.role;
+        const role = user.user.role;
         console.log(role)
         if (role === "admin") {
             const sql = "SELECT * FROM employee";
@@ -90,6 +90,7 @@ app.post('/login', (req, res) => {
             req.session.user = user;
             console.log(req.session)
             console.log(req.session.user)
+            console.log(req.session.user.role)
             return res.json({ Status: "Success", user });
         } else {
             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
