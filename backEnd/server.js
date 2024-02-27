@@ -49,6 +49,7 @@ app.get('/dashboard', (req, res) => {
     // Check if req.session.user exists
     if (!req.session.user) {
         return res.json({ Status: "Error", Error: "User not authenticated" });
+        console.log(req.session.user)
     }
 
     // Destructure role and userId from req.session.user
