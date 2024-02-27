@@ -129,13 +129,13 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/userProfile', (req, res) => {
-    // Check if the user ID is stored in the session
-    if (!req.session.user || !req.session.user.id) {
+    // Check if the authenticatedUser variable is defined
+    if (!authenticatedUser) {
         return res.status(401).json({ error: "User not authenticated" });
     }
 
-    // Fetch user data based on the user ID stored in the session
-    const userId = req.session.user.id;
+    // Fetch user data based on the user ID stored in authenticatedUser
+    const userId = authenticatedUser.id;
     
     // Query the SQL database to fetch employee data based on the user ID
     const sql = "SELECT * FROM employee WHERE id = ?";
@@ -150,6 +150,7 @@ app.get('/userProfile', (req, res) => {
         res.json(userData);
     });
 });
+
 
 
 app.post('/employeelogin', (req, res) => {
