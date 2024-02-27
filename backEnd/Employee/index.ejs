@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Details</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Basic styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    label, input, select {
+      display: block;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    input[type="submit"] {
+      padding: 8px 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .deleteBtn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Media query for responsive design */
+    @media screen and (max-width: 800px) {
+      form {
+        max-width: 90vw !important; /* Ensuring priority */
+      }
+    }
+  </style>
+</head>
+<body>
+    <h1>Employee Details Form</h1>
+    <form id="employeeForm" action="/submit" method="post">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob" required>
+      
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" required>
+      
+      <label for="department">Department:</label>
+      <input type="text" id="department" name="department" required>
+      
+      <label for="designation">Designation:</label>
+      <input type="text" id="designation" name="designation" required>
+      
+      <input type="submit" value="Submit">
+    </form>
+  
+    <h2>Employee Details Table</h2>
+    <!-- <table id="employeeTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date of Birth</th>
+          <th>Age</th>
+          <th>Department</th>
+          <th>Designation</th>
+          <th>Action</th> 
+        </tr>
+      </thead>
+      <tbody id="employeeData">
+        <tr>
+          <td>John Doe</td>
+          <td>1992-05-15</td>
+          <td>30</td>
+          <td>Marketing</td>
+          <td>Manager</td>
+          <td><button class="deleteBtn" onclick="deleteRow(this)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+   -->
+   <!-- HTML Table Structure -->
+<table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Date of Birth</th>
+        <th>Age</th>
+        <th>Department</th>
+        <th>Designation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% employees.forEach(employee => { %>
+        <tr>
+          <td><%= employee.name %></td>
+          <td><%= employee.dob %></td>
+          <td><%= employee.age %></td>
+          <td><%= employee.department %></td>
+          <td><%= employee.designation %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  
+    <script>
+        
+
+const dobInput = document.getElementById('dob');
+const ageInput = document.getElementById('age');
+const form = document.getElementById('employeeForm');
+
+function calculateAge(dob) {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return age;
+  }
+
+dobInput.addEventListener('change', function() {
+  const dob = this.value;
+  const age = calculateAge(dob);
+  ageInput.value = age;
+});
+
+// Function to delete row
+function deleteRow(btn) {
+  const row = btn.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+}
+
+
+
+
+// const form = document.getElementById('employeeForm');
+
+
+</script>
+  </body>
+</html>
