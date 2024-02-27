@@ -46,9 +46,10 @@ con.connect(function(err) {
 });
 
 app.get('/dashboard', (req, res) => {
-    const { user } = req.session;
+    const { user } = req.session.user;
     if (user) {
-        const role = user.role; // Assuming the user object has a 'role' property
+        const role = user.role;
+        console.log(role) // Assuming the user object has a 'role' property
         if (role === "admin") {
             const sql = "SELECT * FROM employee where role='admin'";
             con.query(sql, (err, result) => {
