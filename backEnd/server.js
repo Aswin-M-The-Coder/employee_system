@@ -108,7 +108,7 @@ con.connect(function(err) {
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    const sql = "SELECT id, name, email FROM users WHERE email = ? AND password = ?";
+    const sql = "SELECT id, name, email FROM employee WHERE email = ? AND password = ?";
     con.query(sql, [email, password], (err, result) => {
         if (err) {
             console.error("Error in login query:", err);
@@ -133,7 +133,7 @@ app.get('/dashboard', (req, res) => {
 
     // Fetch user data based on the user ID stored in the session
     const userId = req.session.userId;
-    const sql = "SELECT * FROM users WHERE id = ?";
+    const sql = "SELECT * FROM employee WHERE id = ?";
     con.query(sql, [userId], (err, result) => {
         if (err) {
             console.error("Error fetching user data:", err);
