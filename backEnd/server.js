@@ -61,7 +61,7 @@ app.get('/dashboard', (req, res) => {
             });
         } else {
             const userId = user.id; // Assuming the user object has an 'id' property
-            const sql = "SELECT * FROM employee WHERE user_id = ?";
+            const sql = "SELECT * FROM employee WHERE id = ?";
             con.query(sql, [userId], (err, result) => {
                 if (err) {
                     console.error("Error fetching employee data:", err);
@@ -88,7 +88,8 @@ app.post('/login', (req, res) => {
         if (result.length > 0) {
             const user = result[0];
             req.session.user = user;
-            console.log(req.session.role)
+            console.log(req.session)
+            console.log(req.session.user)
             return res.json({ Status: "Success", user });
         } else {
             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
