@@ -53,6 +53,7 @@ app.get('/dashboard', (req, res) => {
 
     // Destructure role and userId from req.session.user
     const { role, id: userId } = req.session.user;
+    console.log(req.session.user)
 
     // Check if role exists
     if (!role) {
