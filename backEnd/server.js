@@ -46,10 +46,9 @@ con.connect(function(err) {
 });
 
 app.get('/dashboard', (req, res) => {
-    const user = req.session;
+    const role = req.session.user.role;
+    const userId = req.session.user.id; 
     if (user) {
-        const role = user.user.role;
-        console.log(role)
         if (role === "admin") {
             const sql = "SELECT * FROM employee";
             con.query(sql, (err, result) => {
@@ -60,7 +59,7 @@ app.get('/dashboard', (req, res) => {
                 return res.json({ Status: "Success", role: "admin", data: result });
             });
         } else {
-            const userId = user.id; // Assuming the user object has an 'id' property
+            // Assuming the user object has an 'id' property
             const sql = "SELECT * FROM employee WHERE id = ?";
             con.query(sql, [userId], (err, result) => {
                 if (err) {
@@ -90,7 +89,6 @@ app.post('/login', (req, res) => {
             req.session.user = user;
             console.log(req.session)
             console.log(req.session.user)
-            console.log(req.session.user.role)
             return res.json({ Status: "Success", user });
         } else {
             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
