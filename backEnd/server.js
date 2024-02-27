@@ -46,33 +46,41 @@ con.connect(function(err) {
 });
 
 app.get('/dashboard', (req, res) => {
-    const role = req.session.user.role;
-    const userId = req.session.user.id; 
-    if (user) {
-        if (role === "admin") {
-            const sql = "SELECT * FROM employee";
-            con.query(sql, (err, result) => {
-                if (err) {
-                    console.error("Error fetching admin data:", err);
-                    return res.json({ Status: "Error", Error: "Error fetching admin data" });
-                }
-                return res.json({ Status: "Success", role: "admin", data: result });
-            });
-        } else {
-            // Assuming the user object has an 'id' property
-            const sql = "SELECT * FROM employee WHERE id = ?";
-            con.query(sql, [userId], (err, result) => {
-                if (err) {
-                    console.error("Error fetching employee data:", err);
-                    return res.json({ Status: "Error", Error: "Error fetching employee data" });
-                }
-                return res.json({ Status: "Success", role: "employee", data: result });
-            });
-        }
-    } else {
+    // Check if req.session.user exists
+    if (!req.session.user) {
         return res.json({ Status: "Error", Error: "User not authenticated" });
     }
+
+    // Destructure role and userId from req.session.user
+    const { role, id: userId } = req.session.user;
+
+    // Check if role exists
+    if (!role) {
+        return res.json({ Status: "Error", Error: "Role not found for the user" });
+    }
+
+    if (role === "admin") {
+        const sql = "SELECT * FROM employee";
+        con.query(sql, (err, result) => {
+            if (err) {
+                console.error("Error fetching admin data:", err);
+                return res.json({ Status: "Error", Error: "Error fetching admin data" });
+            }
+            return res.json({ Status: "Success", role: "admin", data: result });
+        });
+    } else {
+        // Assuming the user object has an 'id' property
+        const sql = "SELECT * FROM employee WHERE id = ?";
+        con.query(sql, [userId], (err, result) => {
+            if (err) {
+                console.error("Error fetching employee data:", err);
+                return res.json({ Status: "Error", Error: "Error fetching employee data" });
+            }
+            return res.json({ Status: "Success", role: "employee", data: result });
+        });
+    }
 });
+
 
 
 
