@@ -85,6 +85,7 @@ app.post('/login', (req, res) => {
         if (result.length > 0) {
             const user = result[0];
             req.session.user = user;
+            console.log(req.session.user)
             return res.json({ Status: "Success", user });
         } else {
             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
@@ -127,20 +128,20 @@ app.delete('/delete/:id', (req, res) => {
     });
 });
 
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
-    const sql = "SELECT role, id, email FROM users WHERE email = ? AND password = ?";
-    con.query(sql, [email, password], (err, result) => {
-        if (err) return res.json({ Status: "Error", Error: "Error in running query" });
-        if (result.length > 0) {
-            const user = result[0];
-            req.session.user = { id: user.id, email: user.email, role:user.role }; // Store user ID in session
-            return res.json({ Status: "Success", user });
-        } else {
-            return res.json({ Status: "Error", Error: "Wrong Email or Password" });
-        }
-    });
-});
+// app.post('/login', (req, res) => {
+//     const { email, password } = req.body;
+//     const sql = "SELECT role, id, email FROM users WHERE email = ? AND password = ?";
+//     con.query(sql, [email, password], (err, result) => {
+//         if (err) return res.json({ Status: "Error", Error: "Error in running query" });
+//         if (result.length > 0) {
+//             const user = result[0];
+//             req.session.user = { id: user.id, email: user.email, role:user.role }; // Store user ID in session
+//             return res.json({ Status: "Success", user });
+//         } else {
+//             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
+//         }
+//     });
+// });
 
 app.get('/userProfile', (req, res) => {
     // Check if the user ID is stored in the session

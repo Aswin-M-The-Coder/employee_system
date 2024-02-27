@@ -16,7 +16,7 @@ function Dashboard() {
 					navigate('/employeedetail/'+id)
 				}
 			} else {
-				navigate('/')
+				navigate('/start')
 			}
 		})
 	}, [])
@@ -45,7 +45,7 @@ function Dashboard() {
 									<i className="fs-4 bi-people"></i> <span className="ms-1 d-none d-sm-inline">Manage Employees</span> </Link>
 							</li>
 							<li>
-								<Link to="profile" className="nav-link px-0 align-middle text-white">
+								<Link to="/profile" className="nav-link px-0 align-middle text-white">
 									<i className="fs-4 bi-person"></i> <span className="ms-1 d-none d-sm-inline">Profile</span></Link>
 							</li>
 							<li onClick={handleLogout}>
