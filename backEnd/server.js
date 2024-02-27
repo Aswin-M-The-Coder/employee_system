@@ -11,8 +11,7 @@ app.use(cors({
 app.use(session({
     secret: 'your_secret_key',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set secure to true if using HTTPS
+    saveUninitialized: true
 }));
 app.use(express.json());
 app.use(express.static('public'));

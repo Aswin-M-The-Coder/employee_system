@@ -10,7 +10,7 @@ import EditEmployee from './EditEmployee'
 import Start from './Start'
 import EmployeeDetail from './EmployeeDetail'
 import EmployeeLogin from './EmployeeLogin'
-import EmployeeEdit from './employeeEdit'
+import EmployeeEdit from './EditEmployee'
 
 
 function App() {

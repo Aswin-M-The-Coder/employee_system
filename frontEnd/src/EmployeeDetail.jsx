@@ -7,12 +7,12 @@ function EmployeeDetail() {
     const navigate = useNavigate()
     const [employee, setEmployee] = useState([])
     useEffect(()=> {
-        axios.get('http://localhost:8081/get/'+id)
+        axios.get('https://employee-system-8l7x.onrender.com/get/'+id)
         .then(res => setEmployee(res.data.Result[0]))
         .catch(err => console.log(err));
     })
     const handleLogout = () => {
-		axios.get('http://localhost:8081/logout')
+		axios.get('https://employee-system-8l7x.onrender.com/logout')
 		.then(res => {
 			navigate('/start')
 		}).catch(err => console.log(err));
@@ -20,7 +20,7 @@ function EmployeeDetail() {
   return (
     <div>
         <div className='d-flex justify-content-center flex-column align-items-center mt-3'>
-            {/* <img src={`http://localhost:8081/images/`+employee.image} alt="" className='empImg'/> */}
+            {/* <img src={`https://employee-system-8l7x.onrender.com/images/`+employee.image} alt="" className='empImg'/> */}
             <div className='d-flex align-items-center flex-column mt-5'>
                 <h3>Name: {employee.name}</h3>
                 <h3>Email: {employee.email}</h3>
