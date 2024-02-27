@@ -4,19 +4,13 @@ const session = require('express-session');
 const app = express();
 const cors = require('cors')
 
+let authenticatedUser = null;
+
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: 'http://localhost:3000',
     credentials: true
 }));
-const store_house=new session.MemoryStore();
-app.use(session({
-    secret: 'your_secret_key',
-    resave: false,
-    store: store_house,
-    saveUninitialized: true
-}));
 app.use(express.json());
-// app.use(express.static('public'));
 
 const con = mysql.createConnection({
     host: "database-1.cpiowo2ek0tb.eu-north-1.rds.amazonaws.com",
@@ -34,34 +28,37 @@ con.connect(function(err) {
     }
 });
 
-app.get('/dashboard', (req, res) => {
-    const { user } = req.session;
-    if (user) {
-        const role = user.role; // Assuming the user object has a 'role' property
-        if (role === "admin") {
-            const sql = "SELECT * FROM employee where role='admin'";
-            con.query(sql, (err, result) => {
-                if (err) {
-                    console.error("Error fetching admin data:", err);
-                    return res.json({ Status: "Error", Error: "Error fetching admin data" });
-                }
-                return res.json({ Status: "Success", role: "admin", data: result });
-            });
-        } else {
-            const sql = "SELECT * FROM employee_data WHERE user_id = ?";
-            con.query(sql, [userId], (err, result) => {
-                if (err) {
-                    console.error("Error fetching employee data:", err);
-                    return res.json({ Status: "Error", Error: "Error fetching employee data" });
-                }
-                return res.json({ Status: "Success", role: "employee", data: result });
-            });
-        }
+// Middleware to check if the user is authenticated
+const isAuthenticated = (req, res, next) => {
+    if (authenticatedUser) {
+        next();
     } else {
         return res.json({ Status: "Error", Error: "User not authenticated" });
     }
-});
+};
 
+app.get('/dashboard', isAuthenticated, (req, res) => {
+    const { role } = authenticatedUser;
+    if (role === "admin") {
+        const sql = "SELECT * FROM employee where role='admin'";
+        con.query(sql, (err, result) => {
+            if (err) {
+                console.error("Error fetching admin data:", err);
+                return res.json({ Status: "Error", Error: "Error fetching admin data" });
+            }
+            return res.json({ Status: "Success", role: "admin", data: result });
+        });
+    } else {
+        const sql = "SELECT * FROM employee_data WHERE user_id = ?";
+        con.query(sql, [authenticatedUser.id], (err, result) => {
+            if (err) {
+                console.error("Error fetching employee data:", err);
+                return res.json({ Status: "Error", Error: "Error fetching employee data" });
+            }
+            return res.json({ Status: "Success", role: "employee", data: result });
+        });
+    }
+});
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -72,14 +69,14 @@ app.post('/login', (req, res) => {
             return res.json({ Status: "Error", Error: "Error in running query" });
         }
         if (result.length > 0) {
-            const user = result[0];
-            req.session.user = user;
-            return res.json({ Status: "Success", user });
+            authenticatedUser = result[0];
+            return res.json({ Status: "Success", user: authenticatedUser });
         } else {
             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
         }
     });
 });
+
 
 app.get('/getEmployee', (req, res) => {
     const sql = "SELECT * FROM employee";
