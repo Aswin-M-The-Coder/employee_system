@@ -46,12 +46,11 @@ con.connect(function(err) {
 });
 
 app.get('/dashboard', (req, res) => {
-    const { user } = req.session.user;
+    const user = req.session;
     if (user) {
         const role = user.role;
-        console.log(role) // Assuming the user object has a 'role' property
         if (role === "admin") {
-            const sql = "SELECT * FROM employee where role='admin'";
+            const sql = "SELECT * FROM employee";
             con.query(sql, (err, result) => {
                 if (err) {
                     console.error("Error fetching admin data:", err);
@@ -60,6 +59,7 @@ app.get('/dashboard', (req, res) => {
                 return res.json({ Status: "Success", role: "admin", data: result });
             });
         } else {
+            const userId = user.id; // Assuming the user object has an 'id' property
             const sql = "SELECT * FROM employee_data WHERE user_id = ?";
             con.query(sql, [userId], (err, result) => {
                 if (err) {
@@ -73,6 +73,7 @@ app.get('/dashboard', (req, res) => {
         return res.json({ Status: "Error", Error: "User not authenticated" });
     }
 });
+
 
 
 app.post('/login', (req, res) => {
