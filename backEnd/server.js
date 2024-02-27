@@ -8,9 +8,11 @@ app.use(cors({
     origin: 'http://localhost:3000', 
     credentials: true
 }));
+const store_house={}
 app.use(session({
     secret: 'your_secret_key',
     resave: false,
+    store: store_house,
     saveUninitialized: true
 }));
 app.use(express.json());
