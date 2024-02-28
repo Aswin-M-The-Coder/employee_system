@@ -120,7 +120,8 @@ app.post('/login', (req, res) => {
         if (err) return res.json({ Status: "Error", Error: "Error in running query" });
         if (result.length > 0) {
             const user = result[0];
-            authenticatedUser = { id: user.id, email: user.email, role:user.role }; // Store user ID in session
+            authenticatedUser = { id: user.id, email: user.email, role:user.role }; 
+            console.log(user)// Store user ID in session
             return res.json({ Status: "Success", user });
         } else {
             return res.json({ Status: "Error", Error: "Wrong Email or Password" });
