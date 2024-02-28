@@ -16,7 +16,7 @@ function Dashboard() {
 					navigate('/employeedetail/'+id)
 				}
 			} else {
-				navigate('/')
+				navigate('/start')
 			}
 		})
 	}, [])
