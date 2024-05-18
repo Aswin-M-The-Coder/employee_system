@@ -20,7 +20,7 @@ function AddEmployee() {
 		formdata.append("password", data.password);
 		formdata.append("address", data.address);
 		formdata.append("salary", data.salary);
-		axios.post('https://employee-system-8l7x.onrender.com/create', data)
+		axios.post('http://localhost:8081/create', data)
 		.then(res => {
 			navigate('/employee')
 		})

@@ -15,7 +15,7 @@ function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('https://employee-system-8l7x.onrender.com/login', values)
+        axios.post('http://localhost:8081/login', values)
         .then(res => {
             if(res.data.Status === 'Success') {
                 navigate('/');

@@ -8,22 +8,22 @@ function Home() {
   const [admins, setAdmins] = useState([]);
 
   useEffect(() => {
-    axios.get('https://employee-system-8l7x.onrender.com/adminCount')
+    axios.get('http://localhost:8081/adminCount')
 		.then(res => {
 			setAdminCount(res.data[0].admin)
 		}).catch(err => console.log(err));
 
-    axios.get('https://employee-system-8l7x.onrender.com/employeeCount')
+    axios.get('http://localhost:8081/employeeCount')
 		.then(res => {
 			setEmployeeCount(res.data[0].employee)
 		}).catch(err => console.log(err));
 
-    axios.get('https://employee-system-8l7x.onrender.com/salary')
+    axios.get('http://localhost:8081/salary')
 		.then(res => {
 			setSalary(res.data[0].sumOfSalary)
 		}).catch(err => console.log(err));
 
-    axios.get('https://employee-system-8l7x.onrender.com/admins')
+    axios.get('http://localhost:8081/admins')
         .then(res => {
           setAdmins(res.data);
         })

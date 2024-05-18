@@ -16,7 +16,7 @@ function EmployeeLogin() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('https://employee-system-8l7x.onrender.com/employeelogin', values)
+        axios.post('http://localhost:8081/employeelogin', values)
     .then(res => {
         if(res.data.Status === 'Success') {
             const id = res.data.user.id; // Access id from user object

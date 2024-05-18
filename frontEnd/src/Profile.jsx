@@ -6,7 +6,7 @@ function Profile() {
 
   useEffect(() => {
     // Fetch user data from the server
-    axios.get('https://employee-system-8l7x.onrender.com/userProfile')
+    axios.get('http://localhost:8081/userProfile')
       .then(res => {
         // Assuming the server returns user data in JSON format
         setUserData(res.data);
